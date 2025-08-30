@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import FileUpload from "@/components/FileUpload";
 import { 
   BookOpen, 
   Brain, 
@@ -33,6 +34,8 @@ const Dashboard = () => {
     averageScore: 87
   });
 
+  const [showFileUpload, setShowFileUpload] = useState(false);
+
   const studyProgress = [
     { subject: "Mathematics", progress: 75, color: "bg-gradient-learning" },
     { subject: "Physics", progress: 62, color: "bg-gradient-success" },
@@ -61,9 +64,11 @@ const Dashboard = () => {
               </h1>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm">
-                <Users className="h-4 w-4 mr-2" />
-                Study Groups
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/study-groups">
+                  <Users className="h-4 w-4 mr-2" />
+                  Study Groups
+                </Link>
               </Button>
               <Button variant="default" size="sm" asChild>
                 <Link to="/ai-tutor">
@@ -89,11 +94,13 @@ const Dashboard = () => {
                 to accelerate your academic success.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" variant="secondary" className="shadow-success">
-                  <Zap className="h-5 w-5 mr-2" />
-                  Start Learning
+                <Button size="lg" variant="secondary" className="shadow-success" asChild>
+                  <Link to="/quiz">
+                    <Zap className="h-5 w-5 mr-2" />
+                    Start Learning
+                  </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
+                <Button size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10" onClick={() => setShowFileUpload(true)}>
                   <FileText className="h-5 w-5 mr-2" />
                   Upload Notes
                 </Button>
@@ -193,7 +200,7 @@ const Dashboard = () => {
                         Ask Tutor
                       </Link>
                     </Button>
-                    <Button variant="outline" className="h-20 flex-col">
+                    <Button variant="outline" className="h-20 flex-col" onClick={() => setShowFileUpload(true)}>
                       <FileText className="h-6 w-6 mb-2" />
                       Upload Notes
                     </Button>
@@ -251,6 +258,11 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
+
+      {/* File Upload Modal */}
+      {showFileUpload && (
+        <FileUpload onClose={() => setShowFileUpload(false)} />
+      )}
     </div>
   );
 };
