@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Upload, CheckCircle, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface UploadedFile {
   id: string;
@@ -27,7 +28,7 @@ const FileUpload = ({ onClose }: { onClose: () => void }) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const handleFileSelect = (files: FileList | null) => {
+  const handleFileSelect = async (files: FileList | null) => {
     if (!files) return;
     
     const newFiles: UploadedFile[] = Array.from(files).map(file => ({
@@ -40,18 +41,57 @@ const FileUpload = ({ onClose }: { onClose: () => void }) => {
 
     setUploadedFiles(prev => [...prev, ...newFiles]);
 
-    // Simulate upload process
-    newFiles.forEach(file => {
-      setTimeout(() => {
+    // Process each file
+    for (const file of newFiles) {
+      try {
+        // Get the actual File object
+        const actualFile = Array.from(files).find(f => 
+          f.name === file.name && formatFileSize(f.size) === file.size
+        );
+        
+        if (!actualFile) continue;
+
+        // Upload to Supabase storage
+        const fileExt = actualFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('study-materials')
+          .upload(fileName, actualFile);
+
+        if (uploadError) throw uploadError;
+
+        // Process the file with AI
+        const { data, error } = await supabase.functions.invoke('process-file', {
+          body: {
+            file_name: actualFile.name,
+            file_url: uploadData.path,
+            file_type: actualFile.type
+          }
+        });
+
+        if (error) throw error;
+
         setUploadedFiles(prev => 
           prev.map(f => f.id === file.id ? { ...f, uploaded: true } : f)
         );
+        
         toast({
-          title: "File uploaded successfully!",
-          description: `${file.name} has been processed and is ready for AI analysis.`,
+          title: "File processed successfully!",
+          description: `${file.name} has been analyzed and processed by AI.`,
         });
-      }, 1000 + Math.random() * 2000);
-    });
+      } catch (error: any) {
+        console.error('File upload error:', error);
+        toast({
+          title: "Upload failed",
+          description: `Failed to process ${file.name}. Please try again.`,
+          variant: "destructive"
+        });
+        
+        // Remove failed file
+        setUploadedFiles(prev => prev.filter(f => f.id !== file.id));
+      }
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {

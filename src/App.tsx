@@ -12,6 +12,7 @@ import QuizPage from "./pages/QuizPage";
 import ProgressPage from "./pages/ProgressPage";
 import StudyGroupsPage from "./pages/StudyGroupsPage";
 import AuthPage from "./pages/AuthPage";
+import PricingPage from "./pages/PricingPage";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,11 @@ const App = () => (
             <Route path="/study-groups" element={
               <ProtectedRoute>
                 <StudyGroupsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/pricing" element={
+              <ProtectedRoute>
+                <PricingPage />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />

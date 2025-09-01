@@ -15,8 +15,10 @@ import {
   TrendingUp,
   Zap,
   Users,
-  FileText
+  FileText,
+  LogOut
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-studysphere.jpg";
 
 interface StudyStats {
@@ -27,6 +29,7 @@ interface StudyStats {
 }
 
 const Dashboard = () => {
+  const { user, signOut } = useAuth();
   const [stats] = useState<StudyStats>({
     totalHours: 127,
     streakDays: 15,
@@ -35,6 +38,10 @@ const Dashboard = () => {
   });
 
   const [showFileUpload, setShowFileUpload] = useState(false);
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   const studyProgress = [
     { subject: "Mathematics", progress: 75, color: "bg-gradient-learning" },
@@ -64,10 +71,19 @@ const Dashboard = () => {
               </h1>
             </div>
             <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground">
+                Welcome, {user?.email}
+              </span>
               <Button variant="outline" size="sm" asChild>
                 <Link to="/study-groups">
                   <Users className="h-4 w-4 mr-2" />
                   Study Groups
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/pricing">
+                  <Trophy className="h-4 w-4 mr-2" />
+                  Go Premium
                 </Link>
               </Button>
               <Button variant="default" size="sm" asChild>
@@ -75,6 +91,10 @@ const Dashboard = () => {
                   <MessageCircle className="h-4 w-4 mr-2" />
                   AI Tutor
                 </Link>
+              </Button>
+              <Button variant="ghost" size="sm" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
               </Button>
             </div>
           </div>

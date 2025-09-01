@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Brain, 
   Send, 
@@ -65,6 +67,8 @@ const AITutor = () => {
     }
   ];
 
+  const { toast } = useToast();
+
   const handleSendMessage = async (text: string, subject?: string) => {
     if (!text.trim()) return;
 
@@ -81,8 +85,34 @@ const AITutor = () => {
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      // Call AI tutor edge function
+      const { data, error } = await supabase.functions.invoke('ai-tutor', {
+        body: {
+          question: text,
+          subject: subject
+        }
+      });
+
+      if (error) throw error;
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: data.response || "Sorry, I couldn't process your question. Please try again.",
+        sender: 'ai',
+        timestamp: new Date(),
+        subject
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (error: any) {
+      console.error('AI Tutor Error:', error);
+      toast({
+        title: "AI Tutor Error",
+        description: "Failed to get response. Please try again.",
+        variant: "destructive"
+      });
+      
+      // Fallback to mock response
       const aiResponse = generateAIResponse(text, subject);
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -92,8 +122,9 @@ const AITutor = () => {
         subject
       };
       setMessages(prev => [...prev, aiMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const generateAIResponse = (question: string, subject?: string): string => {
