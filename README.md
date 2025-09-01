@@ -1,18 +1,96 @@
-# Welcome to your Lovable project
+# 📚 StudySphere – AI Study Buddy for Students
 
-## Project info
+StudySphere is an AI-powered study companion designed to personalize learning, provide instant feedback, and motivate students.  
+It supports learners by adapting to their pace, goals, and styles, while also contributing to **SDG 4 (Quality Education)** by making high-quality learning support accessible and affordable.
 
-**URL**: https://lovable.dev/projects/865a5fd2-f670-4121-ac29-5d956012a46f
+---
 
-## How can I edit this code?
+## 🌍 Context
 
-There are several ways of editing your application.
+Many students face challenges in learning due to:
+- Lack of personalized guidance  
+- Large class sizes  
+- Limited access to tutors  
 
-**Use Lovable**
+Traditional study resources (books, videos, notes) are **one-size-fits-all**, failing to adapt to individual needs.  
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/865a5fd2-f670-4121-ac29-5d956012a46f) and start prompting.
+**StudySphere solves this** by offering an **AI-powered study companion** that:
+- Personalizes learning experiences  
+- Provides instant feedback  
+- Encourages collaboration  
+- Makes studying more engaging  
 
-Changes made via Lovable will be committed automatically to this repo.
+---
+
+## ✨ Key Features
+
+- **AI-Powered Personalized Study Plans**  
+  Tailors schedules and resources to each student’s goals and weaknesses.  
+
+- **Smart Quiz & Practice Engine**  
+  Auto-generates quizzes, adapts difficulty, and provides instant feedback.  
+
+- **Progress Tracking Dashboard**  
+  Visual reports, achievement badges, and suggestions for improvement.  
+
+- **AI Chat Tutor**  
+  24/7 interactive assistant that explains concepts in simple terms.  
+
+- **Collaboration & Peer Learning**  
+  Create AI-guided study groups, discussions, and peer quizzes.  
+
+- **Document Upload & Summarization**  
+  Summarizes notes/PDFs, highlights key points, and generates flashcards.  
+
+- **Multilingual & Accessibility Support**  
+  Includes text-to-speech and dyslexia-friendly modes.  
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend (App / Web):**  
+- React.js – responsive UI  
+- Tailwind CSS – modern, clean styling  
+
+**Backend:**  
+- Node.js (Express.js) – API and business logic  
+- OpenAI GPT models – tutoring, Q&A, summarization  
+
+**Database & Storage:**  
+- Supabase – student data, profiles, real-time sync  
+- Supabase Auth – authentication  
+
+**Payments:**  
+- IntaSend API – subscription handling  
+
+---
+
+## 🚀 Live Demo
+
+🔗 [https://learn-flourish-ai.vercel.app/](#)  
+
+---
+
+## 🎥 Demo Video
+
+▶️ [https://vimeo.com/1114809813?share=copy](#)  
+
+---
+
+## 💡 Social Impact
+
+StudySphere contributes to **UN Sustainable Development Goal 4 (Quality Education)** by:  
+- Making personalized education affordable  
+- Increasing accessibility for diverse learners  
+- Empowering students globally with AI-powered tools  
+
+---
+
+## 📌 License
+This project is licensed under the MIT License – feel free to use and adapt.
+
+
 
 **Use your preferred IDE**
 
